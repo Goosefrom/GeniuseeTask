@@ -1,6 +1,6 @@
 # Test task for Geniusee
 
-##Guide
+## Guide
 
 - Download the project
 - Go into project directory
