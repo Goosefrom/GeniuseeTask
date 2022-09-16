@@ -44,7 +44,7 @@ public class OrderServiceI implements OrderService{
 
     @Override
     public OrderDto create(OrderDto orderInput) {
-        if(Objects.nonNull(orderInput.getMovieId()) &&Objects.nonNull(orderInput.getParticipants())) {
+        if(Objects.nonNull(orderInput.getMovieId()) && Objects.nonNull(orderInput.getParticipants())) {
             checkExistMovie(orderInput.getMovieId());
             checkParticipants(orderInput.getParticipants());
 

@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-public class MovieControllerTest {
-    private static final Long ID = 0L;
-    private static final String NAME = "test";
+class MovieControllerTest {
+    private static final String ID = "0";
+    private static final String NAME = "testMovie1";
     private static final LocalDate RELEASE_DATE = LocalDate.of(2022, 9, 16);
     private static final Integer COST = 1;
     private static final String HOME_URL = "/api/movies";
@@ -41,7 +41,7 @@ public class MovieControllerTest {
 
     @Test
     void createTest() throws Exception {
-        String content = JSON_MAPPER.writeValueAsString(createMovieInputDto());
+        String content = JSON_MAPPER.writeValueAsString(createMovieDto());
 
         mockMvc.perform(post(HOME_URL).content(content)
                         .accept(MediaType.APPLICATION_JSON)
@@ -56,16 +56,16 @@ public class MovieControllerTest {
     void findByIdTest() throws Exception {
         mockMvc.perform(get(HOME_URL + "/" + ID).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(ID)));
+                .andExpect(jsonPath("$.id", equalTo(Integer.valueOf(ID))));
     }
 
     @Test
     @Sql(value = "classpath:sql/movieCreate.sql", executionPhase =
             Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void searchMoviesTest() throws Exception {
-        String content = JSON_MAPPER.writeValueAsString(createMovieInputDto());
+        String content = JSON_MAPPER.writeValueAsString(createMovieDto());
 
-        mockMvc.perform(post(HOME_URL + "/find?page=0&size=1").content(content)
+        mockMvc.perform(post(HOME_URL + "/all?page=0&size=1").content(content)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -76,7 +76,7 @@ public class MovieControllerTest {
     @Sql(value = "classpath:sql/movieCreate.sql", executionPhase =
             Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void updateTest() throws Exception {
-        String content = JSON_MAPPER.writeValueAsString(createMovieInputDto());
+        String content = JSON_MAPPER.writeValueAsString(createMovieDto());
 
         mockMvc.perform(patch(HOME_URL).content(content)
                         .accept(MediaType.APPLICATION_JSON)
@@ -94,9 +94,9 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$", equalTo("ok")));
     }
 
-    private MovieDto createMovieInputDto() {
+    private MovieDto createMovieDto() {
         MovieDto movieDto = new MovieDto();
-        movieDto.setId(ID);
+        movieDto.setId(Long.valueOf(ID));
         movieDto.setName(NAME);
         movieDto.setReleaseDate(RELEASE_DATE);
         movieDto.setCost(COST);

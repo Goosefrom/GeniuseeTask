@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class OrderDto implements Serializable {
+public class OrderDto {
     private Long id;
     private Long movieId;
     private LocalDate orderTime;

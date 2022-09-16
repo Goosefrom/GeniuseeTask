@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class MovieDtoAll implements Serializable {
+public class MovieDtoAll {
     private Long id;
     private String name;
     private LocalDate releaseDate;

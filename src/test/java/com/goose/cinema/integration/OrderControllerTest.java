@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -28,10 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 
-public class OrderControllerTest {
-    private static final Long ID = 1L;
+class OrderControllerTest {
+    private static final String ID = "0";
 
-    private static final Long MOVIE_ID = 1L;
+    private static final String MOVIE_ID = "1";
     private static final String ORDER_TIME = "2022-09-16";
 
     private static final Integer PARTICIPANTS = 3;
@@ -67,7 +66,7 @@ public class OrderControllerTest {
     void findByIdTest() throws Exception {
         mockMvc.perform(get(HOME_URL + "/" + ID).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(ID)));
+                .andExpect(jsonPath("$.id", is(Integer.valueOf(ID))));
     }
 
     @Test
@@ -75,14 +74,14 @@ public class OrderControllerTest {
             Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = "classpath:sql/orderCreate.sql", executionPhase =
             Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void searchOrderssTest() throws Exception {
+    void searchOrdersTest() throws Exception {
         String content = JSON_MAPPER.writeValueAsString(createOrdersInputDto());
 
-        mockMvc.perform(post(HOME_URL + "/find?page=0&size=1").content(content)
+        mockMvc.perform(post(HOME_URL + "/all?page=0&size=1").content(content)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id", equalTo(ID)));
+                .andExpect(jsonPath("$.content[0].id", equalTo(Integer.valueOf(ID))));
     }
 
     @Test
@@ -97,7 +96,7 @@ public class OrderControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", equalTo(ID)));
+                .andExpect(jsonPath("$.id", equalTo(Integer.valueOf(ID))));
     }
 
     @Test
@@ -113,8 +112,8 @@ public class OrderControllerTest {
 
     private OrderDto createOrdersInputDto() {
         OrderDto orderDto = new OrderDto();
-        orderDto.setId(ID);
-        orderDto.setMovieId(MOVIE_ID);
+        orderDto.setId(Long.valueOf(ID));
+        orderDto.setMovieId(Long.valueOf(MOVIE_ID));
         orderDto.setOrderTime(LocalDate.parse(ORDER_TIME));
         orderDto.setParticipants(PARTICIPANTS);
         return orderDto;

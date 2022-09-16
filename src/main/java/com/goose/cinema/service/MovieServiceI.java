@@ -47,8 +47,8 @@ public class MovieServiceI implements MovieService {
     public MovieDtoAll create(MovieDto movieDto) {
         checkForDuplicate(movieDto.getName());
         if(Objects.isNull(movieDto.getName())
-                && Objects.isNull(movieDto.getCost())
-                && Objects.isNull(movieDto.getReleaseDate())) {
+                || Objects.isNull(movieDto.getReleaseDate())
+                || Objects.isNull(movieDto.getCost())) {
             throw new CinemaException(ErrorType.INTERNAL_ERROR, "Not enough information");
         }
         checkCost(movieDto.getCost());

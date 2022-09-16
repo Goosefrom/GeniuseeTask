@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class OrderServiceTest {
+class OrderServiceTest {
     
     @Autowired
     private OrderServiceI orderService;

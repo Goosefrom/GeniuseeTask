@@ -6,6 +6,7 @@ import com.goose.cinema.exception.CinemaException;
 import com.goose.cinema.exception.ErrorType;
 import com.goose.cinema.persistance.Movie;
 import com.goose.cinema.repository.MovieRepository;
+import com.goose.cinema.service.MovieService;
 import com.goose.cinema.service.MovieServiceI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,18 +30,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class MovieServiceTest {
 
     @Autowired
-    private MovieServiceI movieService;
+    private MovieService movieService;
 
     @MockBean
     private MovieRepository movieRepository;
 
     @Test
-    void createTest() {
+    public void createTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
 
@@ -53,7 +54,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void createIfFieldsNullTest() {
+    public void createIfFieldsNullTest() {
         MovieDto movie = new MovieDto();
         movie.setName("some movie");
 
@@ -63,7 +64,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void findByIdTest() {
+    public void findByIdTest() {
         Movie movie = createMovie();
 
         when(movieRepository.findById(movie.getId())).thenReturn(Optional.of(movie));
@@ -76,7 +77,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void searchMoviesTest() {
+    public void searchMoviesTest() {
         Movie movie = createMovie();
         MovieDto movieInputDto = createMovieDto(movie);
         PageRequest pageRequest = PageRequest.of(0, 1);
@@ -94,7 +95,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void updateTest() {
+    public void updateTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
         Movie returnMovie = new Movie();
@@ -117,7 +118,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void updateIfEmptyTest() {
+    public void updateIfEmptyTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
 
@@ -128,7 +129,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void updateIfNameDuplicateTest() {
+    public void updateIfNameDuplicateTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
         movieDto.setName("test");
@@ -141,7 +142,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void updateIfNameDifferentTest() {
+    public void updateIfNameDifferentTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
         movieDto.setName("test");
@@ -153,7 +154,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void updateIfCostLessThanNullTest() {
+    public void updateIfCostLessThanNullTest() {
         Movie movie = createMovie();
         MovieDto movieDto = createMovieDto(movie);
         movieDto.setCost(0);
@@ -165,7 +166,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void deleteTest() {
+    public void deleteTest() {
         Movie movie = createMovie();
 
         when(movieRepository.existsById(movie.getId())).thenReturn(true);
@@ -176,7 +177,7 @@ public class MovieServiceTest {
     }
 
     @Test
-    void deleteIfEmptyTest() {
+    public void deleteIfEmptyTest() {
         Movie movie = createMovie();
 
         when(movieRepository.findById(movie.getId())).thenReturn(Optional.empty());
